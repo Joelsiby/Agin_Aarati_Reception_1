@@ -25,18 +25,18 @@
 html, body {
   width: 100%;
   height: 100%;
-  height: 100dvh;
   overflow: hidden;
-  overscroll-behavior: none;
   background-color: var(--bg-dark);
   font-family: var(--font-sans);
   color: var(--text-main);
   background: radial-gradient(circle at center, #1b1c27 0%, #090a0f 100%);
+  /* Prevent iOS Safari overscroll/bounce */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto;
 }
 
 #root {
-  height: 100vh;
-  height: 100dvh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,13 +100,18 @@ html, body {
 /* App Root Container */
 .app-root-container {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* Desktop vs Mobile Toggle */
 @media (min-width: 769px) {
   .desktop-only-wrapper {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
   .mobile-only-wrapper {
     display: none;
@@ -119,12 +124,12 @@ html, body {
   }
   .mobile-only-wrapper {
     display: block;
+    height: 100%;
   }
 }
 
 /* Desktop Light Theme Notice Screen */
 .desktop-light-notice-page {
-  min-height: 100vh;
   width: 100%;
   background: #ffffff;
   display: flex;
@@ -140,17 +145,21 @@ html, body {
   letter-spacing: 0.02em;
 }
 
-/* Mobile Fullscreen Viewport (No Dummy Phone Border) */
+/* Mobile Fullscreen Viewport — locked to screen, NO scroll, NO zoom */
 .mobile-viewport {
-  position: relative;
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  width: 100dvw;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  touch-action: none;
   background: #000;
 }
 
-/* Video Background Layer */
+/* Video Background Layer — fills screen exactly without zoom */
 .video-bg-container {
   position: absolute;
   top: 0;
@@ -162,10 +171,14 @@ html, body {
 }
 
 .video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 100%;
   height: 100%;
+  transform: translate(-50%, -50%);
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
 }
 
 .video-overlay {
